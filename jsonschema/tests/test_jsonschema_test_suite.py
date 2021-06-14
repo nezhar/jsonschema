@@ -543,4 +543,127 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
     DRAFT202012.optional_tests_of(name="non-bmp-regex"),
     Validator=Draft202012Validator,
     format_checker=draft202012_format_checker,
+    skip=lambda test: (
+        narrow_unicode_build(test)
+        or missing_date_fromisoformat(test)
+        or allowed_leading_zeros(test)
+        or leap_second(test)
+        or missing_format(draft202012_format_checker)(test)
+        or complex_email_validation(test)
+        or skip(
+            message=bug(),
+            subject="ref",
+            case_description="Recursive references between schemas",
+        )(test)
+        or skip(
+            message=bug(371),
+            subject="ref",
+            case_description="Location-independent identifier",
+        )(test)
+        or skip(
+            message=bug(371),
+            subject="ref",
+            case_description=(
+                "Location-independent identifier with absolute URI"
+            ),
+        )(test)
+        or skip(
+            message=bug(371),
+            subject="ref",
+            case_description=(
+                "Location-independent identifier with "
+                "base URI change in subschema"
+            ),
+        )(test)
+        or skip(
+            message=bug(371),
+            subject="id",
+            description="match $ref to id",
+        )(test)
+        or skip(
+            message=bug(371),
+            subject="id",
+            description="no match on enum or $ref to id",
+        )(test)
+        or skip(
+            message=bug(),
+            subject="refRemote",
+            case_description="base URI change - change folder in subschema",
+        )(test)
+        or skip(
+            message=bug(593),
+            subject="content",
+            valid=False,
+            case_description=(
+                "validation of string-encoded content based on media type"
+            ),
+        )(test)
+        or skip(
+            message=bug(593),
+            subject="content",
+            valid=False,
+            case_description="validation of binary string-encoding",
+        )(test)
+        or skip(
+            message=bug(593),
+            subject="content",
+            valid=False,
+            case_description=(
+                "validation of binary-encoded media type documents"
+            ),
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description="[0] and [false] are unique",
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description="[1] and [true] are unique",
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description="nested [0] and [false] are unique",
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description="nested [1] and [true] are unique",
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description='{"a": false} and {"a": 0} are unique',
+        )(test)
+        or skip(
+            message=bug(686),
+            subject="uniqueItems",
+            description='{"a": true} and {"a": 1} are unique',
+        )(test)
+
+        # Currently, valid in isodata.parse_duration
+        or skip(
+            message=bug(),
+            subject="duration",
+            description='no time elements present',  # P1YT
+        )(test)
+        or skip(
+            message=bug(),
+            subject="duration",
+            description='weeks cannot be combined with other units',  # P1Y2W
+        )(test)
+        or skip(
+            message=bug(),
+            subject="duration",
+            description='zero time, in days',  # P0D
+        )(test)
+        or skip(
+            message=bug(),
+            subject="duration",
+            description='zero time, in seconds',  # PT0S
+        )(test)
+
+    ),
 )
