@@ -468,4 +468,6 @@ else:
         raises=isodate.ISO8601Error,
     )
     def is_duration(instance):
+        if not isinstance(instance, str):
+            return True
         return isodate.parse_duration(instance)

@@ -128,6 +128,46 @@ def leap_second(test):
     )(test)
 
 
+def format_validation_annotation(test):
+    """
+    https://github.com/json-schema-org/JSON-Schema-Test-Suite/pull/464 introduces some tests that contradict the
+    test definitions that are currently available inside optional/format for each of the formats.
+    """
+    return skip(
+        message="Not supported",
+        subject="format",
+        description="invalid email string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid idn-email string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid regex string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid ipv4 string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid ipv6 string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid idn-hostname string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid duration string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid date string is only an annotation by default",
+    )(test)
+
+
 TestDraft3 = DRAFT3.to_unittest_testcase(
     DRAFT3.tests(),
     DRAFT3.format_tests(),
@@ -550,6 +590,7 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or leap_second(test)
         or missing_format(draft202012_format_checker)(test)
         or complex_email_validation(test)
+        or format_validation_annotation(test)
         or skip(
             message=bug(),
             subject="ref",
