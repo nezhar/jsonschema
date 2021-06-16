@@ -191,6 +191,61 @@ def duration_format_validation(test):
     )(test)
 
 
+def ecmascript_regex_validation(test):
+    """
+    Considering switching from re to js-regex after the following issues are resolved:
+    * https://github.com/Julian/jsonschema/issues/612
+    * https://github.com/Zac-HD/js-regex/issues/4
+
+    Notice: Zac-HD/js-regex Repository has been archived
+    """
+    return skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='NKO DIGIT ZERO does not match (unlike e.g. Python)',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='NKO DIGIT ZERO (as \\u escape) does not match',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='NKO DIGIT ZERO matches (unlike e.g. Python)',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='NKO DIGIT ZERO (as \\u escape) matches',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='zero-width whitespace matches',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='zero-width whitespace does not match',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='latin-1 e-acute matches (unlike e.g. Python)',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='latin-1 e-acute does not match (unlike e.g. Python)',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='matches in Python, but should not in jsonschema',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='does not match',
+    )(test) or skip(
+        message=bug(612),
+        subject="ecmascript-regex",
+        description='matches',
+    )(test)
+
+
 TestDraft3 = DRAFT3.to_unittest_testcase(
     DRAFT3.tests(),
     DRAFT3.format_tests(),
@@ -615,6 +670,7 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or complex_email_validation(test)
         or duration_format_validation(test)
         or format_validation_annotation(test)
+        or ecmascript_regex_validation(test)
         or skip(
             message=bug(),
             subject="ref",
