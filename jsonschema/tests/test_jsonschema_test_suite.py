@@ -156,6 +156,10 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
+        description="invalid hostname string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
         description="invalid idn-hostname string is only an annotation by default",
     )(test) or skip(
         message="Not supported",
