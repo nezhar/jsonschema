@@ -168,6 +168,29 @@ def format_validation_annotation(test):
     )(test)
 
 
+def duration_format_validation(test):
+    """
+    isodata.parse_duration allows some formats that should not be parsed
+    """
+    return skip(
+        message=bug(),
+        subject="duration",
+        description='no time elements present',  # P1YT
+    )(test) or skip(
+        message=bug(),
+        subject="duration",
+        description='weeks cannot be combined with other units',  # P1Y2W
+    )(test) or skip(
+        message=bug(),
+        subject="duration",
+        description='zero time, in days',  # P0D
+    )(test) or skip(
+        message=bug(),
+        subject="duration",
+        description='zero time, in seconds',  # PT0S
+    )(test)
+
+
 TestDraft3 = DRAFT3.to_unittest_testcase(
     DRAFT3.tests(),
     DRAFT3.format_tests(),
@@ -618,6 +641,7 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or leap_second(test)
         or missing_format(draft202012_format_checker)(test)
         or complex_email_validation(test)
+        or duration_format_validation(test)
         or format_validation_annotation(test)
         or skip(
             message=bug(),
@@ -711,28 +735,5 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
             subject="uniqueItems",
             description='{"a": true} and {"a": 1} are unique',
         )(test)
-
-        # Currently, valid in isodata.parse_duration
-        or skip(
-            message=bug(),
-            subject="duration",
-            description='no time elements present',  # P1YT
-        )(test)
-        or skip(
-            message=bug(),
-            subject="duration",
-            description='weeks cannot be combined with other units',  # P1Y2W
-        )(test)
-        or skip(
-            message=bug(),
-            subject="duration",
-            description='zero time, in days',  # P0D
-        )(test)
-        or skip(
-            message=bug(),
-            subject="duration",
-            description='zero time, in seconds',  # PT0S
-        )(test)
-
     ),
 )
