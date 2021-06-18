@@ -459,15 +459,15 @@ else:
 
 
 try:
-    import isodate
+    import isoduration
 except ImportError:
     pass
 else:
     @_checks_drafts(
         draft202012="duration",
-        raises=isodate.ISO8601Error,
+        raises=isoduration.DurationParsingException,
     )
     def is_duration(instance):
         if not isinstance(instance, str):
             return True
-        return isodate.parse_duration(instance)
+        return isoduration.parse_duration(instance)
