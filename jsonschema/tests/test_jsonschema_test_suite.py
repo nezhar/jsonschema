@@ -680,31 +680,6 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or format_validation_annotation(test)
         or ecmascript_regex_validation(test)
         or skip(
-            message=bug(),
-            subject="ref",
-            case_description="Recursive references between schemas",
-        )(test)
-        or skip(
-            message=bug(371),
-            subject="ref",
-            case_description="Location-independent identifier",
-        )(test)
-        or skip(
-            message=bug(371),
-            subject="ref",
-            case_description=(
-                "Location-independent identifier with absolute URI"
-            ),
-        )(test)
-        or skip(
-            message=bug(371),
-            subject="ref",
-            case_description=(
-                "Location-independent identifier with "
-                "base URI change in subschema"
-            ),
-        )(test)
-        or skip(
             message=bug(371),
             subject="id",
             description="match $ref to id",
