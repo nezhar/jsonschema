@@ -666,8 +666,10 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
     DRAFT202012.tests(),
     DRAFT202012.format_tests(),
     DRAFT202012.optional_tests_of(name="bignum"),
-    DRAFT202012.optional_tests_of(name="content"),
+    DRAFT202012.optional_tests_of(name="ecmascript-regex"),
+    DRAFT202012.optional_tests_of(name="float-overflow"),
     DRAFT202012.optional_tests_of(name="non-bmp-regex"),
+    DRAFT202012.optional_tests_of(name="refOfUnknownKeyword"),
     Validator=Draft202012Validator,
     format_checker=draft202012_format_checker,
     skip=lambda test: (
@@ -679,72 +681,5 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or complex_email_validation(test)
         or format_validation_annotation(test)
         or ecmascript_regex_validation(test)
-        or skip(
-            message=bug(371),
-            subject="id",
-            description="match $ref to id",
-        )(test)
-        or skip(
-            message=bug(371),
-            subject="id",
-            description="no match on enum or $ref to id",
-        )(test)
-        or skip(
-            message=bug(),
-            subject="refRemote",
-            case_description="base URI change - change folder in subschema",
-        )(test)
-        or skip(
-            message=bug(593),
-            subject="content",
-            valid=False,
-            case_description=(
-                "validation of string-encoded content based on media type"
-            ),
-        )(test)
-        or skip(
-            message=bug(593),
-            subject="content",
-            valid=False,
-            case_description="validation of binary string-encoding",
-        )(test)
-        or skip(
-            message=bug(593),
-            subject="content",
-            valid=False,
-            case_description=(
-                "validation of binary-encoded media type documents"
-            ),
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description="[0] and [false] are unique",
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description="[1] and [true] are unique",
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description="nested [0] and [false] are unique",
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description="nested [1] and [true] are unique",
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description='{"a": false} and {"a": 0} are unique',
-        )(test)
-        or skip(
-            message=bug(686),
-            subject="uniqueItems",
-            description='{"a": true} and {"a": 1} are unique',
-        )(test)
     ),
 )
