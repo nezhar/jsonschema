@@ -169,6 +169,38 @@ def format_validation_annotation(test):
         message="Not supported",
         subject="format",
         description="invalid date string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid iri string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid iri-reference string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid json-pointer string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid uri-reference string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid uri string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid date-time string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid relative-json-pointer string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid time string is only an annotation by default",
     )(test)
 
 
