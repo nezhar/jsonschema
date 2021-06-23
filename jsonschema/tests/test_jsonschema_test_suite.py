@@ -713,5 +713,18 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or complex_email_validation(test)
         or format_validation_annotation(test)
         or ecmascript_regex_validation(test)
+        or skip(
+            message="ToDo: Extend validation",
+            subject="dynamicRef",
+            case_description="A $dynamicRef that initially resolves to a schema with a matching $dynamicAnchor should "
+                             "resolve to the first $dynamicAnchor in the dynamic scope",
+            description='The recursive part is not valid against the root',
+        )(test)
+        or skip(
+            message="ToDo: Extend validation",
+            subject="dynamicRef",
+            case_description="multiple dynamic paths to the $dynamicRef keyword",
+            description='recurse to integerNode - floats are not allowed',
+        )(test)
     ),
 )
