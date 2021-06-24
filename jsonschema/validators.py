@@ -161,15 +161,22 @@ def create(
             if scope:
                 self.resolver.push_scope(scope)
             try:
-                validators = []
+                if isinstance(self, Draft202012Validator):
+                    validators = []
+                    # We make sure $ref is evaluated first if available in schema
+                    ref = _schema.get(u"$ref")
+                    if ref is not None:
+                        validators = [(u"$ref", ref)]
 
-                # We make sure $ref is evaluated first if available in schema
-                ref = _schema.get(u"$ref")
-                if ref is not None:
-                    validators = [(u"$ref", ref)]
-
-                # Add all remaining validators
-                validators += [(x, _schema[x]) for x in _schema if x not in ["$ref"]]
+                    # Add all remaining validators
+                    validators += [(x, _schema[x]) for x in _schema if x not in ["$ref"]]
+                else:
+                    # Compatibility to Draft7 and older
+                    ref = _schema.get(u"$ref")
+                    if ref is not None:
+                        validators = [(u"$ref", ref)]
+                    else:
+                        validators = _schema.items()
 
                 for k, v in validators:
                     validator = self.VALIDATORS.get(k)
