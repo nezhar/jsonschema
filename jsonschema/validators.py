@@ -145,7 +145,12 @@ def create(
             """
             Returns a list of validators that should apply for the given schema
             """
-            legacy_cls = [Draft3Validator, Draft4Validator, Draft6Validator, Draft7Validator]
+            legacy_validator_cls = [
+                Draft3Validator,
+                Draft4Validator,
+                Draft6Validator,
+                Draft7Validator,
+            ]
 
             ref = schema.get(u"$ref")
             if ref is not None:
@@ -153,8 +158,10 @@ def create(
                 validators = [(u"$ref", ref)]
 
                 # Apply all remaining validators for newer drafts
-                if not any(isinstance(self, x) for x in legacy_cls):
-                    validators += [(x, schema[x]) for x in schema if x not in ["$ref"]]
+                if not any(isinstance(self, x) for x in legacy_validator_cls):
+                    validators += [
+                        (x, schema[x]) for x in schema if x not in ["$ref"]
+                    ]
             else:
                 validators = schema.items()
 
@@ -687,14 +694,16 @@ class RefResolver(object):
         uri, fragment = urldefrag(url)
 
         for subschema in self._finditem(schema, "$id"):
-            if self._urljoin_cache(self.resolution_scope, subschema['$id']).rstrip("/") == uri.rstrip("/"):
+            target_uri = self._urljoin_cache(
+                self.resolution_scope, subschema['$id']
+            )
+            if target_uri.rstrip("/") == uri.rstrip("/"):
                 if fragment:
                     subschema = self.resolve_fragment(subschema, fragment)
 
                 if self.cache_remote:
                     self.store[url] = subschema
                 return subschema
-
 
     def resolve(self, ref):
         """
