@@ -27,6 +27,30 @@ def dependencies_draft3(validator, dependencies, instance, schema):
                     yield ValidationError(message % (each, property))
 
 
+def dependencies_draft4_draft6_draft7(validator, dependencies, instance, schema):
+    """
+    The dependencies keyword has been deprecated since draft 2019-09 and has been split into dependentRequired
+    and dependentSchemas.
+    """
+    if not validator.is_type(instance, "object"):
+        return
+
+    for property, dependency in dependencies.items():
+        if property not in instance:
+            continue
+
+        if validator.is_type(dependency, "array"):
+            for each in dependency:
+                if each not in instance:
+                    message = "%r is a dependency of %r"
+                    yield ValidationError(message % (each, property))
+        else:
+            for error in validator.descend(
+                    instance, dependency, schema_path=property,
+            ):
+                yield error
+
+
 def disallow_draft3(validator, disallow, instance, schema):
     for disallowed in _utils.ensure_list(disallow):
         if validator.is_valid(instance, {"type": [disallowed]}):
