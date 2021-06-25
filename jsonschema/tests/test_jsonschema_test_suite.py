@@ -130,8 +130,9 @@ def leap_second(test):
 
 def format_validation_annotation(test):
     """
-    https://github.com/json-schema-org/JSON-Schema-Test-Suite/pull/464 introduces some tests that contradict the
-    test definitions that are currently available inside optional/format for each of the formats.
+    https://github.com/json-schema-org/JSON-Schema-Test-Suite/pull/464
+    introduces some tests that contradict the test definitions that are
+    currently available inside optional/format for each of the formats.
     """
     return skip(
         message="Not supported",
@@ -140,7 +141,8 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid idn-email string is only an annotation by default",
+        description="invalid idn-email string is only an annotation by "
+                    "default",
     )(test) or skip(
         message="Not supported",
         subject="format",
@@ -160,7 +162,8 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid idn-hostname string is only an annotation by default",
+        description="invalid idn-hostname string is only an annotation by"
+                    " default",
     )(test) or skip(
         message="Not supported",
         subject="format",
@@ -176,15 +179,18 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid iri-reference string is only an annotation by default",
+        description="invalid iri-reference string is only an annotation by"
+                    " default",
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid json-pointer string is only an annotation by default",
+        description="invalid json-pointer string is only an annotation by"
+                    " default",
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid uri-reference string is only an annotation by default",
+        description="invalid uri-reference string is only an annotation by"
+                    " default",
     )(test) or skip(
         message="Not supported",
         subject="format",
@@ -192,11 +198,13 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid date-time string is only an annotation by default",
+        description="invalid date-time string is only an annotation by "
+                    "default",
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid relative-json-pointer string is only an annotation by default",
+        description="invalid relative-json-pointer string is only an "
+                    "annotation by default",
     )(test) or skip(
         message="Not supported",
         subject="format",
@@ -208,13 +216,15 @@ def format_validation_annotation(test):
     )(test) or skip(
         message="Not supported",
         subject="format",
-        description="invalid uri-template string is only an annotation by default",
+        description="invalid uri-template string is only an annotation by"
+                    " default",
     )(test)
 
 
 def ecmascript_regex_validation(test):
     """
-    Considering switching from re to js-regex after the following issues are resolved:
+    Considering switching from re to js-regex after the following issues are
+     resolved:
     * https://github.com/Julian/jsonschema/issues/612
     * https://github.com/Zac-HD/js-regex/issues/4
 
@@ -536,14 +546,17 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
         or skip(
             message="ToDo: Extend validation",
             subject="dynamicRef",
-            case_description="A $dynamicRef that initially resolves to a schema with a matching $dynamicAnchor should "
-                             "resolve to the first $dynamicAnchor in the dynamic scope",
+            case_description="A $dynamicRef that initially resolves to a "
+                             "schema with a matching $dynamicAnchor should "
+                             "resolve to the first $dynamicAnchor in the "
+                             "dynamic scope",
             description='The recursive part is not valid against the root',
         )(test)
         or skip(
             message="ToDo: Extend validation",
             subject="dynamicRef",
-            case_description="multiple dynamic paths to the $dynamicRef keyword",
+            case_description="multiple dynamic paths to the $dynamicRef "
+                             "keyword",
             description='recurse to integerNode - floats are not allowed',
         )(test)
     ),
