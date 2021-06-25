@@ -201,6 +201,14 @@ def format_validation_annotation(test):
         message="Not supported",
         subject="format",
         description="invalid time string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid uuid string is only an annotation by default",
+    )(test) or skip(
+        message="Not supported",
+        subject="format",
+        description="invalid uri-template string is only an annotation by default",
     )(test)
 
 
