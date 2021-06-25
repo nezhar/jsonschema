@@ -141,6 +141,25 @@ def create(
             for error in cls(cls.META_SCHEMA).iter_errors(schema):
                 raise exceptions.SchemaError.create_from(error)
 
+        def schema_validators(self, schema):
+            """
+            Returns a list of validators that should apply for the given schema
+            """
+            legacy_cls = [Draft3Validator, Draft4Validator, Draft6Validator, Draft7Validator]
+
+            ref = schema.get(u"$ref")
+            if ref is not None:
+                # We make sure $ref is evaluated first if available in schema
+                validators = [(u"$ref", ref)]
+
+                # Apply all remaining validators for newer drafts
+                if not any(isinstance(self, x) for x in legacy_cls):
+                    validators += [(x, schema[x]) for x in schema if x not in ["$ref"]]
+            else:
+                validators = schema.items()
+
+            return validators
+
         def iter_errors(self, instance, _schema=None):
             if _schema is None:
                 _schema = self.schema
@@ -161,23 +180,7 @@ def create(
             if scope:
                 self.resolver.push_scope(scope)
             try:
-                if isinstance(self, Draft202012Validator):
-                    validators = []
-                    # We make sure $ref is evaluated first if available in schema
-                    ref = _schema.get(u"$ref")
-                    if ref is not None:
-                        validators = [(u"$ref", ref)]
-
-                    # Add all remaining validators
-                    validators += [(x, _schema[x]) for x in _schema if x not in ["$ref"]]
-                else:
-                    # Compatibility to Draft7 and older
-                    ref = _schema.get(u"$ref")
-                    if ref is not None:
-                        validators = [(u"$ref", ref)]
-                    else:
-                        validators = _schema.items()
-
+                validators = self.schema_validators(_schema)
                 for k, v in validators:
                     validator = self.VALIDATORS.get(k)
                     if validator is None:
