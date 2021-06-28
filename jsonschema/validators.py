@@ -496,6 +496,28 @@ Draft202012Validator = create(
 )
 
 _LATEST_VERSION = Draft202012Validator
+_STORE = None
+
+
+def get_store():
+    """
+    return URIDict
+    """
+    global _STORE
+    if _STORE is None:
+        _STORE = _utils.URIDict(
+            (id, validator.META_SCHEMA)
+            for id, validator in meta_schemas.items()
+        )
+    return _STORE
+
+
+def remove_store_item(key):
+    """
+    Bring the store to the initial state
+    """
+    global _STORE
+    del _STORE[key]
 
 
 class RefResolver(object):
@@ -512,7 +534,7 @@ class RefResolver(object):
 
             The actual referring document
 
-        store (dict):
+        store (URIDict):
 
             A mapping from URIs to documents to cache
 
@@ -562,10 +584,7 @@ class RefResolver(object):
         self.handlers = dict(handlers)
 
         self._scopes_stack = [base_uri]
-        self.store = _utils.URIDict(
-            (id, validator.META_SCHEMA)
-            for id, validator in meta_schemas.items()
-        )
+        self.store = get_store()
         self.store.update(store)
         self.store[base_uri] = referrer
 
