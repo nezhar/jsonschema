@@ -136,23 +136,9 @@ def contains(validator, contains, instance, schema):
 
     if 'minContains' in schema:
         min_contains = schema['minContains']
-        if not validator.is_type(min_contains, "integer"):
-            yield ValidationError(
-                "minContains of %r in not valid under the given schema" % (
-                    min_contains,
-                )
-            )
-            return
 
     if 'maxContains' in schema:
         max_contains = schema['maxContains']
-        if not validator.is_type(max_contains, "integer"):
-            yield ValidationError(
-                "maxContains of %r is not valid under the given schema" % (
-                    instance,
-                )
-            )
-            return
 
     # minContains set to 0 will ignore contains
     if min_contains == 0:

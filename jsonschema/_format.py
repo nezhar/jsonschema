@@ -214,7 +214,7 @@ def is_ipv6(instance):
 
 try:
     from fqdn import FQDN
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     @_checks_drafts(
@@ -233,7 +233,7 @@ else:
 try:
     # The built-in `idna` codec only implements RFC 3890, so we go elsewhere.
     import idna
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     @_checks_drafts(
@@ -253,7 +253,7 @@ try:
 except ImportError:
     try:
         from rfc3986_validator import validate_rfc3986
-    except ImportError:
+    except ImportError:  # pragma: no cover
         pass
     else:
         @_checks_drafts(name="uri")
@@ -380,7 +380,7 @@ except ImportError:
     try:  # webcolors<1.11
         from webcolors import css21_names_to_hex as CSS21_NAMES_TO_HEX
         import webcolors
-    except ImportError:
+    except ImportError:  # pragma: no cover
         pass
 else:
     def is_css_color_code(instance):
@@ -403,7 +403,7 @@ else:
 
 try:
     import jsonpointer
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     @_checks_drafts(
@@ -451,7 +451,7 @@ else:
 
 try:
     import uri_template
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     @_checks_drafts(
@@ -467,7 +467,7 @@ else:
 
 try:
     import isoduration
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     @_checks_drafts(
