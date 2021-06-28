@@ -496,6 +496,29 @@ Draft202012Validator = create(
 )
 
 _LATEST_VERSION = Draft202012Validator
+_STORE = None
+
+
+def get_store():
+    """
+    Get store or initialize if not None
+    """
+    global _STORE
+    if _STORE is None:
+        _STORE = _utils.URIDict(
+            (id, validator.META_SCHEMA)
+            for id, validator in meta_schemas.items()
+        )
+    return _STORE
+
+
+def remove_store_item(key):
+    """
+    Remove a given key from the store
+    """
+    global _STORE
+    if _STORE is not None:
+        del _STORE[key]
 
 
 class RefResolver(object):
@@ -562,10 +585,7 @@ class RefResolver(object):
         self.handlers = dict(handlers)
 
         self._scopes_stack = [base_uri]
-        self.store = _utils.URIDict(
-            (id, validator.META_SCHEMA)
-            for id, validator in meta_schemas.items()
-        )
+        self.store = get_store()
         self.store.update(store)
         self.store[base_uri] = referrer
 

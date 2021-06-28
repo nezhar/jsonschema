@@ -15,6 +15,7 @@ import attr
 
 from jsonschema import FormatChecker, TypeChecker, exceptions, validators
 from jsonschema.tests._helpers import bug
+from jsonschema.validators import remove_store_item
 
 
 def startswith(validator, startswith, instance, schema):
@@ -1527,6 +1528,9 @@ class TestRefResolver(SynchronousTestCase):
         with resolver.resolving(ref) as resolved:
             self.assertEqual(resolved, schema)
 
+        # Remove test item from store
+        remove_store_item(ref)
+
     def test_cache_remote_on(self):
         response = [object()]
 
@@ -1544,6 +1548,9 @@ class TestRefResolver(SynchronousTestCase):
             pass
         with resolver.resolving(ref):
             pass
+
+        # Remove test item from store
+        remove_store_item(ref)
 
     def test_cache_remote_off(self):
         response = [object()]
