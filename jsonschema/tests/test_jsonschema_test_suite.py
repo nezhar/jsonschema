@@ -128,99 +128,6 @@ def leap_second(test):
     )(test)
 
 
-def format_validation_annotation(test):
-    """
-    https://github.com/json-schema-org/JSON-Schema-Test-Suite/pull/464
-    introduces some tests that contradict the test definitions that are
-    currently available inside optional/format for each of the formats.
-    """
-    return skip(
-        message="Not supported",
-        subject="format",
-        description="invalid email string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid idn-email string is only an annotation by "
-                    "default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid regex string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid ipv4 string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid ipv6 string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid hostname string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid idn-hostname string is only an annotation by"
-                    " default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid duration string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid date string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid iri string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid iri-reference string is only an annotation by"
-                    " default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid json-pointer string is only an annotation by"
-                    " default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid uri-reference string is only an annotation by"
-                    " default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid uri string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid date-time string is only an annotation by "
-                    "default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid relative-json-pointer string is only an "
-                    "annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid time string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid uuid string is only an annotation by default",
-    )(test) or skip(
-        message="Not supported",
-        subject="format",
-        description="invalid uri-template string is only an annotation by"
-                    " default",
-    )(test)
-
-
 def ecmascript_regex_validation(test):
     """
     Considering switching from re to js-regex after the following issues are
@@ -712,24 +619,16 @@ TestDraft7 = DRAFT7.to_unittest_testcase(
 )
 
 
-DRAFT202012 = DRAFT202012.to_unittest_testcase(
+TestDraft202012 = DRAFT202012.to_unittest_testcase(
     DRAFT202012.tests(),
-    DRAFT202012.format_tests(),
     DRAFT202012.optional_tests_of(name="bignum"),
     DRAFT202012.optional_tests_of(name="ecmascript-regex"),
     DRAFT202012.optional_tests_of(name="float-overflow"),
     DRAFT202012.optional_tests_of(name="non-bmp-regex"),
     DRAFT202012.optional_tests_of(name="refOfUnknownKeyword"),
     Validator=Draft202012Validator,
-    format_checker=draft202012_format_checker,
     skip=lambda test: (
         narrow_unicode_build(test)
-        or missing_date_fromisoformat(test)
-        or allowed_leading_zeros(test)
-        or leap_second(test)
-        or missing_format(draft202012_format_checker)(test)
-        or complex_email_validation(test)
-        or format_validation_annotation(test)
         or ecmascript_regex_validation(test)
         or skip(
             message="ToDo: Extend validation",
@@ -748,4 +647,19 @@ DRAFT202012 = DRAFT202012.to_unittest_testcase(
             description='recurse to integerNode - floats are not allowed',
         )(test)
     ),
+)
+
+
+TestDraft202012Format = DRAFT202012.to_unittest_testcase(
+    DRAFT202012.format_tests(),
+    Validator=Draft202012Validator,
+    format_checker=draft202012_format_checker,
+    skip=lambda test: (
+        complex_email_validation(test)
+        or missing_date_fromisoformat(test)
+        or allowed_leading_zeros(test)
+        or leap_second(test)
+        or missing_format(draft202012_format_checker)(test)
+        or complex_email_validation(test)
+    )
 )
