@@ -1088,6 +1088,28 @@ class ValidatorTestMixin(MetaSchemaTestsMixin, object):
             TupleValidator({"uniqueItems": True}).validate((1, 1))
         self.assertIn("(1, 1) has non-unique elements", str(e.exception))
 
+    def test_check_redefined_sequence(self):
+        """
+        Allow array to validate against another defined sequence type
+        """
+        schema = {
+            "type": "array",
+            "uniqueItems": True
+        }
+        Validator = validators.extend(
+            self.Validator,
+            type_checker=self.Validator.TYPE_CHECKER.redefine(
+                "array",
+                lambda checker, thing: isinstance(thing, (list, deque)),
+            )
+        )
+
+        validator = Validator(schema)
+        validator.validate(deque(['a', None, '1', '', True]))
+
+        with self.assertRaises(exceptions.ValidationError):
+            validator.validate(deque(['a', 'b', 'a']))
+
 
 class AntiDraft6LeakMixin(object):
     """

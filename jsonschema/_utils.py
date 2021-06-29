@@ -244,6 +244,8 @@ def uniq(container):
                     if isinstance(i, dict) and isinstance(e, dict):
                         if dict_equal(i, e):
                             return False
+                    elif i == e:
+                        return False
 
                 seen.append(e)
     return True
