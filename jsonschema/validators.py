@@ -454,6 +454,7 @@ Draft202012Validator = create(
     validators={
         u"$ref": _validators.ref,
         u"$defs": _validators.defs,
+        u"$dynamicAnchor": _validators.dynamicAnchor,
         u"$dynamicRef": _validators.dynamicRef,
         u"additionalItems": _validators.additionalItems,
         u"additionalProperties": _validators.additionalProperties,

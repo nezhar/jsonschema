@@ -363,19 +363,29 @@ def ref(validator, ref, instance, schema):
             validator.resolver.pop_scope()
 
 
+def dynamicAnchor(validator, dynamicRef, instance, schema):
+    url = urljoin(validator.resolver.resolution_scope, "#" + dynamicRef)
+    a = 1
+
+
 def dynamicRef(validator, dynamicRef, instance, schema):
     _, fragment = urldefrag(dynamicRef)
     scope_stack = validator.resolver.scopes_stack_copy
 
+    subschema = None
+
     for url in scope_stack:
         lookup_url = urljoin(url, dynamicRef)
-        with validator.resolver.resolving(lookup_url) as lookup_schema:
-            if "$dynamicAnchor" in lookup_schema \
-                    and fragment == lookup_schema["$dynamicAnchor"]:
-                subschema = lookup_schema
-                for error in validator.descend(instance, subschema):
-                    yield error
-                break
+        _, lookup_schema = validator.resolver.resolve(lookup_url)
+
+        if "$dynamicAnchor" in lookup_schema \
+                and fragment == lookup_schema["$dynamicAnchor"]:
+            subschema = lookup_schema
+            break
+
+    if subschema:
+        for error in validator.descend(instance, subschema):
+            yield error
     else:
         with validator.resolver.resolving(dynamicRef) as lookup_schema:
             subschema = lookup_schema
